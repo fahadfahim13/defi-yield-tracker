@@ -2,7 +2,7 @@
 
 Live APY/APR dashboard across major DeFi protocols — powered by DeFiLlama, no API key required.
 
-**[Live Demo](https://defi-yield-tracker.vercel.app)**
+**[Live Demo](https://defi-yield-tracker-fh7c3nhzo-fahadfahim13s-projects.vercel.app)**
 
 ---
 
@@ -147,6 +147,74 @@ The repo is pre-configured for Vercel (zero config needed for Vite):
 6. Click **Deploy**
 
 Auto-deploys on every push to `main`.
+
+---
+
+## Testing
+
+### Running Unit Tests
+
+```bash
+# Run all tests once (CI mode)
+npm run test
+
+# Watch mode — re-runs on file change
+npm run test:watch
+
+# Interactive browser UI
+npm run test:ui
+
+# Coverage report
+npm run test:coverage
+```
+
+Coverage is enforced at 70% for `src/lib/defiLlama.ts` and `src/hooks/useProtocolYields.ts`.
+
+---
+
+## Manual E2E Checklist
+
+Run through this checklist against `npm run dev` (or a deployed build) before each release.
+
+### 1. Wallet Connection
+
+- [ ] Page loads without a connected wallet — "Connect Wallet" button is visible in the header
+- [ ] Clicking "Connect Wallet" opens the wallet selection modal (MetaMask, WalletConnect, etc.)
+- [ ] Connecting with MetaMask shows the truncated address in the header (e.g. `0xABcd…1234`)
+- [ ] Disconnecting returns the header to the "Connect Wallet" state
+- [ ] On mobile: WalletConnect QR code renders correctly and a mobile wallet can scan and connect
+
+### 2. Yield Table
+
+- [ ] On initial load, a loading skeleton or spinner is displayed while pools are fetched
+- [ ] After fetch: table shows rows for Aave V3, Compound V3, Curve, and Lido pools
+- [ ] Each row displays: Protocol, Chain, Symbol, TVL (USD), APY (%), 30D Mean APY
+- [ ] Clicking a column header sorts the table by that column (ascending / descending toggle)
+- [ ] The "Asset" filter input narrows rows to those whose symbol matches the typed string (case-insensitive)
+- [ ] Clearing the filter restores all rows
+- [ ] If the DeFiLlama API is unreachable, an error message is displayed instead of the table
+
+### 3. APY History Chart
+
+- [ ] Clicking a row in the yield table opens the Pool Detail modal / chart panel
+- [ ] The chart renders a line graph of APY over time for the selected pool
+- [ ] Time-range buttons (7D, 30D, 90D) switch the displayed history correctly
+- [ ] The chart x-axis shows readable date labels; y-axis shows APY %
+- [ ] Closing the modal returns focus to the table with no visible errors
+
+### 4. Protocol Comparison
+
+- [ ] The Compare view (if accessible via nav) loads and displays side-by-side protocol cards
+- [ ] Each card shows Protocol name, current APY, 30D Mean APY, and TVL
+- [ ] Selecting two or more protocols highlights differences in yield clearly
+- [ ] The view is responsive: on a narrow viewport, cards stack vertically
+
+### 5. General
+
+- [ ] No console errors on initial page load
+- [ ] No console errors after wallet connect / disconnect cycle
+- [ ] No console errors after switching time ranges on the chart
+- [ ] Page is functional on Chrome, Firefox, and Safari (latest stable)
 
 ---
 
